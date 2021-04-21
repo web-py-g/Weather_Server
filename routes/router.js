@@ -1,6 +1,6 @@
 const express = require("express");
 const apiRequesterClass = require("../init/apiReq.js");
-const RepositoryClass = require("../data_base/dataBase.js");
+const RepositoryClass = require("../init/dataBase.js");
 
 const router = express.Router();
 const apiRequester = new apiRequesterClass();
@@ -29,18 +29,10 @@ router.get("/weather/city", async (req, res) => {
 
 router.get("/weather/coordinates", async (req, res) => {
 
-	param = "=";
-	console.log(req.query);
-	req.query
-
 	let lat = req.query.lat;
 	let long = req.query.long;
-	console.log(`${param}${lat},${long}`);
-	const jsonData = await apiRequester.getResponse( `${param}${lat},${long}`);
 
-	res.status(200).json({
-		jsonData
-	})
+	const jsonData = await apiRequester.getResponse( `lat=${lat}&lon=${long}`);
 
 	if (jsonData.error) {
 	  res.status(404);

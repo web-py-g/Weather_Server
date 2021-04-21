@@ -1,17 +1,22 @@
 const MongoClient = require('mongodb').MongoClient;
-
+// pS6a02PCy86FzuNt - Web_py
 class Repository {
 
-  async connect() {
-    try {
-      this.client = await MongoClient.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-      this.collection = await this.client.db(process.env.MONGO_DB).collection(process.env.MONGO_COLLECTIONS);
+  async connect(){
+   try {
+      const uri = `mongodb+srv://Web_py:pS6a02PCy86FzuNt@cluster0.fwhnm.mongodb.net/Weather?retryWrites=true&w=majority`;
+      this.client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+      this.collection = await this.client.db("Weather").collection("city");
 
       console.log(`Connection to ${this.collection.collectionName} is successfully done`);
     } catch (err) {
       console.error(err);
     }
+
   }
+
+
+  
 
   async isIncluded(coords) {
     let res = await this.collection.findOne({lat : coords.lat, lon : coords.lon});
