@@ -43,12 +43,11 @@ router.get("/weather/coordinates", async (req, res) => {
 });
 
 router.get("/favourites", async (req, res) => {
-  // await repo.connect();
   const favList = await repo.findAll();
 
   let favResponses = await Promise.all(favList.map( item => {
-    console.log(item)
-    return apiRequester.getResponse(item)
+    console.log(item);
+    return apiRequester.getResponse("q=" + encodeURIComponent(item));
   }));
 
   res.json(favResponses);
@@ -57,13 +56,13 @@ router.get("/favourites", async (req, res) => {
 router.post("/favourites", async (req, res) => {
   // await repo.connect();
   
-  console.log(req.body)
-  if(req.body === {}) { // НЕ ЗАХОДИТ
-      console.log("ERROR")
+  console.log(req.query + ' it is req.query');
+  if(req.query === {}) { // НЕ ЗАХОДИТ
+      console.log("ERROR");
       return res.sendStatus(400);
   } 
   
-  const jsonData = await apiRequester.getResponse(req.body.cityName);
+  const jsonData = await apiRequester.getResponse('q=' + req.query.city);
 
   console.log(jsonData);
 
@@ -81,13 +80,13 @@ router.post("/favourites", async (req, res) => {
 router.delete("/favourites", async (req, res) => {
   // await repo.connect();
 
-  console.log(req.body)
-  if(req.body === null) { // НЕ ЗАХОДИТ
+  console.log(req.query)
+  if(req.query === null) { // НЕ ЗАХОДИТ
       console.log("ERROR")
       return res.sendStatus(400);
   } 
 
-  const jsonData = await apiRequester.getResponse(req.body.cityName);
+  const jsonData = await apiRequester.getResponse("q=" + req.query.city);
   await repo.delete(jsonData.coords);
 
   res.sendStatus(204);

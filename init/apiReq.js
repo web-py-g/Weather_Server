@@ -33,12 +33,11 @@ class ApiRequester {
         lat : jsonData.coord.lat,
         lon : jsonData.coord.lon
       },
-      temp : jsonData.main.temp,
+      temp : jsonData.main.temp + '°C',
       icon : "https://openweathermap.org/img/wn/" + (jsonData.weather[0].icon) + "@2x.png",
-      wind : jsonData.wind.speed,
-      windDir : convertWind(jsonData.wind.deg),
-      pressure : jsonData.main.pressure,
-      humidity : jsonData.main.humidity,
+      wind : jsonData.wind.speed + ' м/с' + ', ' + convertWind(jsonData.wind.deg),
+      pressure : jsonData.main.pressure + ' мм.рт.с',
+      humidity : jsonData.main.humidity + '%',
       cloud : jsonData.clouds.all + '%'
     }
 
