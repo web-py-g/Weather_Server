@@ -40,7 +40,7 @@ router.get("/weather/coordinates", async (req, res) => {
 
 router.get("/weather/id", async (req, res) => {
 
-  const jsonData = await apiRequester.getResponse('id=' req.query.id);
+  const jsonData = await apiRequester.getResponse('id=' + req.query.id);
 
   if (jsonData.error) {
     res.status(404);
