@@ -72,13 +72,13 @@ router.post("/favourites", async (req, res) => {
 
   console.log(jsonData);
 
-  if (await repo.isIncluded(jsonData.coords)) {
+  if (await repo.isIncluded(jsonData.id)) {
     console.log("This city is already in db");
     res.sendStatus(409);
     return;
   }
 
-  await repo.insert(jsonData.cityName, jsonData.coords, res);
+  await repo.insert(jsonData.cityName, jsonData.id);
   
   res.sendStatus(201);
 });
@@ -86,13 +86,13 @@ router.post("/favourites", async (req, res) => {
 router.delete("/favourites", async (req, res) => {
 	
   console.log(req.query)
-  if(req.query === null) { // НЕ ЗАХОДИТ
+  if(req.query === null) {
       console.log("ERROR")
       return res.sendStatus(400);
   } 
 
   const jsonData = await apiRequester.getResponse("q=" + req.query.city);
-  await repo.delete(jsonData.coords);
+  await repo.delete(jsonData.id);
 
   res.sendStatus(204);
 });

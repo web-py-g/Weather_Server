@@ -16,17 +16,13 @@ class Repository {
   }
 
 
-  
-
-  async isIncluded(coords) {
-    let res = await this.collection.findOne({lat : coords.lat, lon : coords.lon});
+  async isIncluded(id) {
+    let res = await this.collection.findOne({cityId: id});
     return res !== null;
   }
 
-  async insert(city, coords, res) {
-    let obj = {cityName : city, lat : coords.lat, lon : coords.lon}
-
-    console.log("LAT:", obj.lat, "LON", obj.lon)
+  async insert(city, id, res) {
+    let obj = {cityName : city, cityId : id}
 
     this.collection.insertOne(obj, (err, res) => {
       console.log(res);
@@ -43,10 +39,10 @@ class Repository {
     return output;
   }
 
-  async delete(coords) {
-    let filter = {lat : coords.lat, lon : coords.lon}
+  async delete(id) {
+    let filter = {cityId: id}
 
-    if (!await this.isIncluded(coords)) {
+    if (!await this.isIncluded(id)) {
       console.log("There is on such city in DB");
       return;
     }
