@@ -31,7 +31,7 @@ class ApiRequester {
         lat : jsonData.coord.lat,
         lon : jsonData.coord.lon
       },
-      temp : jsonData.main.temp + '°C',
+      temp : Math.round(jsonData.main.temp) + '°C',
       icon : "https://openweathermap.org/img/wn/" + (jsonData.weather[0].icon) + "@2x.png",
       wind : jsonData.wind.speed + ' м/с' + ', ' + convertWind(jsonData.wind.deg),
       pressure : jsonData.main.pressure + ' мм.рт.с',

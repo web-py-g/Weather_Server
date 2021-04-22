@@ -63,8 +63,7 @@ router.get("/favourites", async (req, res) => {
 
 router.post("/favourites", async (req, res) => {
   
-  console.log(req.query + ' it is req.query');
-  if(req.query === {}) { // НЕ ЗАХОДИТ
+  if(req.query === {}) {
       console.log("ERROR");
       return res.sendStatus(400);
   } 
