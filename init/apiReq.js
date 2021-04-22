@@ -19,7 +19,7 @@ function convertWind (wind){
 
 class ApiRequester {
   constructor(){
-      this.key = '&appid=23b165255fbf21ce4cfa7be39b155b62&lang=ru&units=metric';
+      this.key = '&appid=23b165255fbf21ce4cfa7be39b155b62&units=metric';
       this.urlSample = "https://api.openweathermap.org/data/2.5/weather?";
   }
 
