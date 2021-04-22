@@ -1,5 +1,4 @@
 const fetch = require("node-fetch");
-const apikey = '&appid=23b165255fbf21ce4cfa7be39b155b62&lang=ru';
 
 function convertWind (wind){
   const dirs = {N: 'С', W: 'З', E: 'В', S: 'Ю'};
@@ -21,7 +20,6 @@ function convertWind (wind){
 class ApiRequester {
   constructor(){
       this.key = '&appid=23b165255fbf21ce4cfa7be39b155b62&lang=ru&units=metric';
-      // this.host = process.env.API_HOST;
       this.urlSample = "https://api.openweathermap.org/data/2.5/weather?";
   }
 
@@ -38,17 +36,14 @@ class ApiRequester {
       wind : jsonData.wind.speed + ' м/с' + ', ' + convertWind(jsonData.wind.deg),
       pressure : jsonData.main.pressure + ' мм.рт.с',
       humidity : jsonData.main.humidity + '%',
-      cloud : jsonData.clouds.all + '%'
+      cloud : jsonData.clouds.all + '%',
+      id : jsonData.id
     }
 
     return resJson;
   }
 
   async getResponse(cityIdentifier) {
-
-
-    console.log("ENCODED CITY NAME -->", this.urlSample + cityIdentifier + this.key);
-
 
     const response = await fetch(this.urlSample + cityIdentifier + this.key)
     .then(function(resp) {

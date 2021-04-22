@@ -12,10 +12,6 @@ router.get("/weather/city", async (req, res) => {
 
 	const jsonData = await apiRequester.getResponse(param + req.query.q);
 
-	res.status(200).json({
-		jsonData
-	})
-
 	if (!req.query.q) {
 	res.status(404);
 	res.sendStatus(404);
@@ -42,6 +38,18 @@ router.get("/weather/coordinates", async (req, res) => {
 	}
 });
 
+router.get("/weather/id", async (req, res) => {
+
+  const jsonData = await apiRequester.getResponse('id=' req.query.id);
+
+  if (jsonData.error) {
+    res.status(404);
+    res.sendStatus(404)
+  } else {
+    res.json(jsonData)
+  }
+});
+
 router.get("/favourites", async (req, res) => {
   const favList = await repo.findAll();
 
@@ -54,7 +62,6 @@ router.get("/favourites", async (req, res) => {
 });
 
 router.post("/favourites", async (req, res) => {
-  // await repo.connect();
   
   console.log(req.query + ' it is req.query');
   if(req.query === {}) { // НЕ ЗАХОДИТ
@@ -78,8 +85,7 @@ router.post("/favourites", async (req, res) => {
 });
 
 router.delete("/favourites", async (req, res) => {
-  // await repo.connect();
-
+	
   console.log(req.query)
   if(req.query === null) { // НЕ ЗАХОДИТ
       console.log("ERROR")
