@@ -31,12 +31,12 @@ class ApiRequester {
         lat : jsonData.coord.lat,
         lon : jsonData.coord.lon
       },
-      temp : Math.round(jsonData.main.temp) + '°C',
-      icon : "https://openweathermap.org/img/wn/" + (jsonData.weather[0].icon) + "@2x.png",
-      wind : jsonData.wind.speed + ' м/с' + ', ' + convertWind(jsonData.wind.deg),
-      pressure : jsonData.main.pressure + ' мм.рт.с',
-      humidity : jsonData.main.humidity + '%',
-      cloud : jsonData.clouds.all + '%',
+      temp : `${Math.round(jsonData.main.temp)}°C`,
+      icon : `https://openweathermap.org/img/wn/${jsonData.weather[0].icon}@2x.png`,
+      wind : `${jsonData.wind.speed} м/с, ${convertWind(jsonData.wind.deg)}`,
+      pressure : `${jsonData.main.pressure} мм.рт.с`,
+      humidity : `${jsonData.main.humidity}%`,
+      cloud : `${jsonData.clouds.all}%`,
       id : jsonData.id
     }
 
@@ -47,10 +47,10 @@ class ApiRequester {
 
     const response = await fetch(this.urlSample + cityIdentifier + this.key)
     .then(function(resp) {
-  		if (resp.status != 200) {
-  			return null;
-  		}
-  		return resp.json();
+      if (resp.status != 200) {
+        return null;
+      }
+      return resp.json();
       })
       
     return this.simlifyJsonData(response);
