@@ -11,48 +11,34 @@ router.get("/weather/city", async (req, res) => {
   const jsonData = await apiRequester.getResponse(`q=${req.query.q}`);
 
   if (!req.query.q) {
-  res.status(404);
-  res.sendStatus(404);
+    res.status(404).send();
+    return;
   } else if (jsonData.error) {
-  res.status(400);
-  res.sendStatus(400);
-  } else {
-  res.json(jsonData);
+    res.status(400).send();
+    return;
   }
+
+  res.json(jsonData);
 });
 
 router.get("/weather/coordinates", async (req, res) => {
 
-  let lat = req.query.lat;
-  let long = req.query.long;
+  let {lat, long} = req.query;
 
   const jsonData = await apiRequester.getResponse( `lat=${lat}&lon=${long}`);
 
-  if (!req.query.q) {
-      res.status(404).json();
-      return;
-  } else {
-    res.json(jsonData)
-  }
-});
+  if (jsonData.error) {
+    res.status(404).send();
+    return;
+  } 
 
-router.get("/weather/id", async (req, res) => {
-
-  const jsonData = await apiRequester.getResponse(`id=${req.query.id}`);
-
-  if (!req.query.q) {
-      res.status(404).json();
-      return;
-    } else {
-    res.json(jsonData)
-  }
+  res.json(jsonData);
 });
 
 router.get("/favourites", async (req, res) => {
   const favList = await repo.findAll();
 
   let favResponses = await Promise.all(favList.map( item => {
-    console.log(item);
     return apiRequester.getResponse(`q=${encodeURIComponent(item)}`);
   }));
 
@@ -60,25 +46,23 @@ router.get("/favourites", async (req, res) => {
 });
 
 router.post("/favourites", async (req, res) => {
-  
-  if (!req.query.q) {
-      res.status(404).json();
-      return;
-    }
-  
+
   const jsonData = await apiRequester.getResponse(`q=${req.query.city}`);
+  
+  if (jsonData === 400) {
+    res.status(400).send();
+    return;
+  }
 
-  console.log(jsonData);
-
-  if (await repo.isIncluded(jsonData.id)) {
+  if (await repo.isIncluded(jsonData.coords)) {
     console.log("This city is already in db");
-    res.sendStatus(409);
+    res.status(409).send();
     return;
   }
 
   await repo.insert(jsonData.cityName, jsonData.id);
   
-  res.sendStatus(201);
+  res.sendStatus(201).send();
 });
 
 router.delete("/favourites", async (req, res) => {
@@ -92,7 +76,7 @@ router.delete("/favourites", async (req, res) => {
   const jsonData = await apiRequester.getResponse(`q=${req.query.city}`);
   await repo.delete(jsonData.id);
 
-  res.sendStatus(204);
+  res.sendStatus(204).send();
 });
 
 module.exports = {router, repo};
