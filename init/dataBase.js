@@ -4,9 +4,9 @@ class Repository {
 
   async connect(){
    try {
-      const uri = `mongodb+srv://Web_py:pS6a02PCy86FzuNt@cluster0.fwhnm.mongodb.net/Weather?retryWrites=true&w=majority`;
+      const uri = `mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPWD}@${process.env.MONGOCLUSTER}/${process.env.MONGODB}?retryWrites=true&w=majority`;
       this.client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-      this.collection = await this.client.db("Weather").collection("city");
+      this.client.db(process.env.MONGODB).collection(process.env.MONGOCOLLECTION);
 
       console.log(`Connection to ${this.collection.collectionName} is successfully done`);
     } catch (err) {
