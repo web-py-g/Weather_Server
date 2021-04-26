@@ -19,5 +19,5 @@ const server = app.listen(port, async (err, req, res, next) => {
     return;
   }
 
-  console.log("Server is listening on port:" + port);
+  console.log(`Server is listening on port:${port}`);
 });

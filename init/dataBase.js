@@ -8,15 +8,13 @@ class Repository {
       const uri = `mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPWD}@${process.env.MONGOCLUSTER}/${process.env.MONGODB}?retryWrites=true&w=majority`;
       console.log(uri);
       this.client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-      this.collection = await this.client.db(process.env.MONGODB).collection(`${process.env.MONGOCOLLECTION}`);
+      this.collection = await this.client.db(process.env.MONGODB).collection(process.env.MONGOCOLLECTION);
 
       console.log(`Connection to ${process.env.MONGOCOLLECTION} is successfully done`);
     } catch (err) {
       console.error(err);
     }
-
   }
-
 
   async isIncluded(id) {
     let res = await this.collection.findOne({cityId: id});
